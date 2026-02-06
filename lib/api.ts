@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { Note, CreateNote } from "../types/note";
+import { RegisterRequest, User } from "@/types/auth";
 
 const API = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -73,3 +74,13 @@ export const deleteNote = async (noteId: Note["id"]): Promise<Note> => {
   });
   return response.data;
 };
+
+export async function register(payload: RegisterRequest) {
+  const { data } = await API.post<User>("/auth/register", payload, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return data;
+}
