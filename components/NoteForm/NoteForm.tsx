@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import css from "./NoteForm.module.css";
-import { createNote } from "@/lib/api";
+import { createNote } from "@/lib/api/clientApi";
 import { useRouter } from "next/navigation";
 import { useNoteStore } from "@/lib/store/noteStore";
 import React from "react";
@@ -55,8 +55,6 @@ const NoteForm = () => {
 
     mutate(payload);
   };
-
-  console.log(draft);
 
   return (
     <form action={handleSubmit} className={css.form}>

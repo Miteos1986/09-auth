@@ -1,9 +1,24 @@
+"use client";
+
 import css from "./Header.module.css";
 import Link from "next/link";
 
 import AuthNavigation from "../AuthNavigation/AuthNavigation";
+import { useAuthStore } from "@/lib/store/authStore";
+import { useRouter } from "next/navigation";
+import { logout } from "@/lib/api/clientApi";
 
 function Header() {
+  const router = useRouter();
+
+  const { isAuthenticated, user, clearIsAuthenticated } = useAuthStore();
+
+  const handleLogout = async () => {
+    await logout();
+    clearIsAuthenticated();
+    router.push("/");
+  };
+
   return (
     <header className={css.header}>
       <Link href="/" aria-label="Home">
@@ -17,7 +32,11 @@ function Header() {
           <li>
             <Link href="/notes/filter/all">Notes</Link>
           </li>
-          <AuthNavigation />
+          <AuthNavigation
+            isAuthenticated={isAuthenticated}
+            user={user}
+            onLogout={handleLogout}
+          />
         </ul>
       </nav>
     </header>

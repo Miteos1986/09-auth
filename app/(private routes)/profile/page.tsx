@@ -26,11 +26,9 @@ export const metadata: Metadata = {
 
 const Profile = async () => {
   const cookieStore = await cookies();
-  /*const session = cookieStore.get("session");
-
-  if (!session) {
-    redirect("/login");
-  }*/
+  if (!cookieStore.get("accessToken")) {
+    redirect("/sign-in");
+  }
 
   return <ProfilePageClient />;
 };

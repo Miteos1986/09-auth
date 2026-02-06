@@ -5,7 +5,7 @@ import { useState } from "react";
 import { APIError } from "@/app/api/api";
 
 import css from "./SignUpPage.module.css";
-import { register } from "@/lib/api";
+import { register } from "@/lib/api/clientApi";
 import { useAuthStore } from "@/lib/store/authStore";
 
 interface RegisterFormValues {
@@ -27,7 +27,6 @@ const SignUp = () => {
       };
 
       const user = await register(payload);
-      console.log(user);
 
       if (user) {
         setUser(user);
