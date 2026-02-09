@@ -1,4 +1,4 @@
-import { User } from "@/types/auth";
+import { User } from "@/types/user";
 import { API } from "./api";
 import { CreateNote, Note } from "@/types/note";
 
