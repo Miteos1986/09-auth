@@ -1,6 +1,6 @@
 import Link from "next/link";
 import css from "./AuthNavigation.module.css";
-import { User } from "@/types/auth";
+import { User } from "@/types/user";
 
 interface AuthNavigationProps {
   isAuthenticated: boolean;
