@@ -63,7 +63,12 @@ export async function checkSession() {
 }
 
 export async function getMe() {
-  const { data } = await API.get<User>("/auth/me");
+  const { data } = await API.get<User>("/users/me");
 
+  return data;
+}
+
+export async function updateMe(payload: { username: string }): Promise<User> {
+  const { data } = await API.patch<User>("/users/me", payload);
   return data;
 }

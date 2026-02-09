@@ -3,6 +3,7 @@
 import Image from "next/image";
 import css from "./ProfilePage.module.css";
 import { useAuthStore } from "@/lib/store/authStore";
+import Link from "next/link";
 
 const ProfilePageClient = () => {
   const user = useAuthStore((state) => state.user);
@@ -16,9 +17,9 @@ const ProfilePageClient = () => {
       <div className={css.profileCard}>
         <div className={css.header}>
           <h1 className={css.formTitle}>Profile Page</h1>
-          <a href="#" className={css.editProfileButton}>
+          <Link href="/profile/edit" className={css.editProfileButton}>
             Edit Profile
-          </a>
+          </Link>
         </div>
         <div className={css.avatarWrapper}>
           <Image
