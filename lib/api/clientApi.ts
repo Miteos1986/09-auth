@@ -12,7 +12,46 @@ export interface LoginRequest {
   password: string;
 }
 
-const TOKEN = process.env.NOTEHUB_TOKEN;
+export interface FetchNotesResponse {
+  notes: Note[];
+  totalPages: number;
+}
+
+export const fetchNotes = async ({
+  page,
+  perPage,
+  search,
+  tag,
+}: {
+  page: number;
+  perPage: number;
+  search?: string;
+  tag?: string;
+}): Promise<FetchNotesResponse> => {
+  const params: Record<string, string | number> = {
+    page,
+    perPage,
+  };
+
+  if (search && search !== "") {
+    params.search = search;
+  }
+
+  if (tag && tag !== "") {
+    params.tag = tag;
+  }
+
+  const response = await API.get<FetchNotesResponse>("/notes", {
+    params,
+  });
+
+  return response.data;
+};
+
+export const fetchNoteById = async (noteId: Note["id"]): Promise<Note> => {
+  const response = await API.get<Note>(`/notes/${noteId}`);
+  return response.data;
+};
 
 export async function register(payload: RegisterRequest) {
   const { data } = await API.post<User>("/auth/register", payload, {
@@ -35,25 +74,17 @@ export async function login(payload: LoginRequest) {
 }
 
 export const createNote = async (payload: CreateNote): Promise<Note> => {
-  const response = await API.post<Note>("/notes", payload, {
-    headers: {
-      Authorization: `Bearer ${TOKEN}`,
-    },
-  });
+  const response = await API.post<Note>("/notes", payload);
   return response.data;
 };
 
 export const deleteNote = async (noteId: Note["id"]): Promise<Note> => {
-  const response = await API.delete<Note>(`/notes/${noteId}`, {
-    headers: {
-      Authorization: `Bearer ${TOKEN}`,
-    },
-  });
+  const response = await API.delete<Note>(`/notes/${noteId}`);
   return response.data;
 };
 
 export async function logout() {
-  await API.post("auth/logout");
+  await API.post("/auth/logout");
 }
 
 export async function checkSession() {

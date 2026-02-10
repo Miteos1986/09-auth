@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { parse } from "cookie";
-import { api } from "@/app/api/api";
+//import { parse } from "cookie";
+//import { api } from "@/app/api/api";
 
 const authRoutes = ["/sign-in", "/sign-up"];
 const privateRoutes = ["/profile", "/notes"];
 
-export async function proxy(request: NextRequest) {
+/*export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const cookieStore = await cookies();
 
@@ -69,6 +69,28 @@ export async function proxy(request: NextRequest) {
     if (isPrivateRoute) {
       return NextResponse.next();
     }
+  }
+
+  return NextResponse.next();
+}*/
+
+export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const cookieStore = await cookies();
+
+  const accessToken = cookieStore.get("accessToken")?.value;
+
+  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
+  const isPrivateRoute = privateRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
+
+  if (!accessToken && isPrivateRoute) {
+    return NextResponse.redirect(new URL("/sign-in", request.url));
+  }
+
+  if (accessToken && isAuthRoute) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();

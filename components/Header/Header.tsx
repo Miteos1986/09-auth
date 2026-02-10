@@ -5,19 +5,9 @@ import Link from "next/link";
 
 import AuthNavigation from "../AuthNavigation/AuthNavigation";
 import { useAuthStore } from "@/lib/store/authStore";
-import { useRouter } from "next/navigation";
-import { logout } from "@/lib/api/clientApi";
 
 function Header() {
-  const router = useRouter();
-
-  const { isAuthenticated, user, clearIsAuthenticated } = useAuthStore();
-
-  const handleLogout = async () => {
-    await logout();
-    clearIsAuthenticated();
-    router.push("/sign-in");
-  };
+  const { isAuthenticated, user } = useAuthStore();
 
   return (
     <header className={css.header}>
@@ -32,11 +22,7 @@ function Header() {
           <li>
             <Link href="/notes/filter/all">Notes</Link>
           </li>
-          <AuthNavigation
-            isAuthenticated={isAuthenticated}
-            user={user}
-            onLogout={handleLogout}
-          />
+          <AuthNavigation isAuthenticated={isAuthenticated} user={user} />
         </ul>
       </nav>
     </header>

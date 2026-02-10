@@ -74,8 +74,6 @@ const EditProfile = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-
-    console.log(value);
     setUsername(value);
   };
 
@@ -116,7 +114,7 @@ const EditProfile = () => {
             />
           </div>
 
-          <p>Email: user_email@example.com</p>
+          <p>Email: {user?.email}</p>
 
           <div className={css.actions}>
             <button type="submit" className={css.saveButton}>
