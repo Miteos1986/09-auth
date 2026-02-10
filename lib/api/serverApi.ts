@@ -1,7 +1,9 @@
+//import { api } from "@/app/api/api";
+
 import { Note } from "@/types/note";
-import { api } from "@/app/api/api";
 import { User } from "@/types/user";
 import { cookies } from "next/headers";
+import { API } from "./api";
 
 export interface FetchNotesResponse {
   notes: Note[];
@@ -39,7 +41,7 @@ export const fetchNotes = async ({
     params.tag = tag;
   }
 
-  const { data } = await api.get<FetchNotesResponse>("/notes", {
+  const { data } = await API.get<FetchNotesResponse>("/notes", {
     params,
     headers: {
       Cookie: cookieStore.toString(),
@@ -52,7 +54,7 @@ export const fetchNotes = async ({
 export const fetchNoteById = async (noteId: Note["id"]): Promise<Note> => {
   const cookieStore = cookies();
 
-  const { data } = await api.get<Note>(`/notes/${noteId}`, {
+  const { data } = await API.get<Note>(`/notes/${noteId}`, {
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -64,7 +66,7 @@ export const fetchNoteById = async (noteId: Note["id"]): Promise<Note> => {
 export const checkSession = async (): Promise<boolean> => {
   const cookieStore = cookies();
 
-  const { data } = await api.get<{ success: boolean }>("/auth/session", {
+  const { data } = await API.get<{ success: boolean }>("/auth/session", {
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -80,7 +82,7 @@ export const getMe = async (): Promise<User> => {
     .map((c) => `${c.name}=${c.value}`)
     .join("; ");
 
-  const { data } = await api.get<User>("/users/me", {
+  const { data } = await API.get<User>("/users/me", {
     headers: {
       Cookie: cookieHeader,
     },
